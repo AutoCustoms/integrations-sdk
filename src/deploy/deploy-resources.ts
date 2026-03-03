@@ -43,7 +43,7 @@ const createOrUpdateFunction = async (
   }
 };
 
-export const deployResources = async (pathMatch?: string) => {
+export const deployResources = async (pathMatch?: string, suppliedFunctionName?: string) => {
   const stediApiKey = requiredEnvVar("STEDI_API_KEY");
   if (stediApiKey === "<YOUR_STEDI_API_KEY_HERE>") {
     console.log(
@@ -57,7 +57,11 @@ You can generate a new API key here: https://www.stedi.com/app/settings/api-keys
   const functionPaths = getFunctionPaths(pathMatch);
 
   const promises: Promise<unknown>[] = functionPaths.map(async (fnPath) => {
-    const { functionPath, functionName } = splitFunctionNameAndPath(fnPath);
+    let { functionPath, functionName } = splitFunctionNameAndPath(fnPath);
+
+    if (suppliedFunctionName) {
+      functionName = suppliedFunctionName;
+    }
 
     console.log(`Deploying ${functionName}`);
 

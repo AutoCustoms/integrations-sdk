@@ -10,9 +10,13 @@ export const builder = {
     describe:
       "deploy a subset of resources by specifying a folder path containing functions to deploy",
   },
+  functionName: {
+    default: "",
+    describe: "deploy a single function by specifying the function name",
+  }
 };
 
-export const handler = async (argv: { path?: string }) => {
+export const handler = async (argv: { path?: string, functionName?: string }) => {
   console.log(`Deploying...`);
-  await deployResources(argv.path);
+  await deployResources(argv.path, argv.functionName);
 };
